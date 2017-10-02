@@ -8,6 +8,7 @@ namespace Prisoner
 {
     class GreedyBot : IPrisoner
     {
+        Random rnd = new Random();
         public Move GetFirstMove()
         {
             return Move.COOP;
@@ -15,7 +16,7 @@ namespace Prisoner
 
         public Move GetMove(Move opponentsPrev)
         {
-            Random rnd = new Random();
+            
             if (rnd.Next(12) == 5)
                 return Move.DEFECT;
             else if (opponentsPrev == Move.COOP)

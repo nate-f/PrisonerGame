@@ -8,6 +8,7 @@ namespace Prisoner
 {
     class DefectBot : IPrisoner
     {
+        Random rnd = new Random();
         public Move GetFirstMove()
         {
             return Move.DEFECT;
@@ -15,7 +16,7 @@ namespace Prisoner
 
         public Move GetMove(Move opponentsPrev)
         {
-            Random rnd = new Random();
+
             if (rnd.Next(9) == 5)
                 return Move.COOP;
             else

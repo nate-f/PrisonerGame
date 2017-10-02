@@ -1,2 +1,11 @@
 c:\users\fitz\documents\visual studio 2015\Projects\Prisoner\Prisoner\bin\Debug\Prisoner.exe.config
 C:\Users\Codex\Source\Repos\PrisonerGame\Prisoner\bin\Debug\Prisoner.exe.config
+C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\bin\Debug\Prisoner.exe.config
+C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\bin\Debug\Prisoner.exe
+C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\bin\Debug\Prisoner.pdb
+C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.csprojResolveAssemblyReference.cache
+C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.Form1.resources
+C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.Properties.Resources.resources
+C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.csproj.GenerateResource.Cache
+C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.exe
+C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.pdb

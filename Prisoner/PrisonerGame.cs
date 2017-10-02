@@ -9,8 +9,10 @@ namespace Prisoner
 {
     public class PrisonerGame
     {
-        private const int ROUNDS_PER_GENERATION = 10;
-        private const int ELIMS_PER_GENERATION = 10;
+        private const int ROUNDS_PER_GENERATION = 100; 
+        private const int ELIMS_PER_GENERATION = 10; //should depend on size of pool
+        private const int BOTS_PER_AI = 200;
+
 
         private const int PTS_PER_COOP = 3;
         private const int PTS_PER_WIN = 5;
@@ -18,43 +20,58 @@ namespace Prisoner
         
 
 
-        private List<IPrisoner> bots;
-        private RandomNumberGenerator random = new RNGCryptoServiceProvider();
+        private List<IPrisoner> players;
+        private Random random = new Random();
+
+        private int generations;
+        private int numAI;
+
         public PrisonerGame(List<IPrisoner> bots, int generations)
         {
-            
+            players = CreatePlayers(bots).ToList();
+            this.generations = generations;
+            this.numAI = bots.Count;
         }
         public void PlayGame()
         {
-            var players = CreatePlayers(bots);
-            var results = PlayGeneration(players);
-            var newGeneration = ScoreGeneration(results);
-            bots = newGeneration;
+            for (int i = 0; i < generations; i++)
+            {
+                var results = PlayGeneration(players).ToList();
+                var newGeneration = Eliminate(results).ToList();
+                this.players = newGeneration.ToList();
+            }
+        }
+        public void PlayRound()
+        {
+            var results = PlayGeneration(players).ToList();
+            var newGeneration = Eliminate(results).ToList();
+            this.players = newGeneration.ToList();
         }
 
         private IEnumerable<IPrisoner> CreatePlayers(IEnumerable<IPrisoner> prisoners)
         {
             foreach (var bot in prisoners)
-                for (int i = 0; i < 10; i++)
-                    yield return (IPrisoner)Activator.CreateInstance(bot.GetType());
+                for (int i = 0; i < BOTS_PER_AI; i++)
+                    yield return (IPrisoner) Activator.CreateInstance(bot.GetType());
         }
 
         private IEnumerable<PlayerResult> PlayGeneration(IEnumerable<IPrisoner> players)
         {
             var playersToGo = new List<IPrisoner>(players);
             var playerResults = new List<PlayerResult>();
-            while (playersToGo.Count != 0)
+            for(int i = 0; i < (BOTS_PER_AI * numAI) / 2; i++)
             {
-                var player0 = playersToGo[RandomInt(playersToGo.Count)];
+                var player0 = playersToGo[random.Next(playersToGo.Count)];
                 playersToGo.Remove(player0);
-                var player1 = playersToGo[RandomInt(playersToGo.Count)];
+                var player1 = playersToGo[random.Next(playersToGo.Count)];
+                playersToGo.Remove(player1);
                 var p0Score = 0;
                 var p1Score = 0;
 
                 var move0 = player0.GetFirstMove();
                 var move1 = player1.GetFirstMove();
 
-                for (int i = 0; i < ROUNDS_PER_GENERATION; i++)
+                for (int j = 0; j < ROUNDS_PER_GENERATION; j++)
                 {
                     if(move0 == Move.COOP && move1 == Move.COOP)
                     {
@@ -84,7 +101,13 @@ namespace Prisoner
                 yield return new PlayerResult(player1, p1Score, p0Score);
             }
         }
-        private IEnumerable<IPrisoner> ScoreGeneration(IEnumerable<PlayerResult> results) =>  results.OrderBy(q => q.score).Take(results.Count - ELIMS_PER_GENERATION).Select(w => w.player).ToList();
+        private IEnumerable<IPrisoner> Eliminate(IEnumerable<PlayerResult> results) => 
+            results.OrderBy(q => q.score)
+            .Take((BOTS_PER_AI * numAI) - ELIMS_PER_GENERATION)
+            .Select(w => w.player)
+            .Concat(results.OrderBy(q => q.score)
+            .Take(ELIMS_PER_GENERATION)
+            .Select(e => (IPrisoner)Activator.CreateInstance(e.player.GetType())));
 
         private class PlayerResult
         {
@@ -98,17 +121,6 @@ namespace Prisoner
                 this.oppScore = opp;
             }
         }
-        public string ToString()
-        {
-            throw new NotImplementedException();
-        }
-        private int RandomInt(int limit)
-        {
-            var bytes = new byte[4];
-            random.GetBytes(bytes);
-            int number = BitConverter.ToInt32(bytes, 0);
-            //make this correct later
-            return number;
-        }
+        public string ToString() => players.GroupBy(e => e.GetName()).OrderByDescending(e => e.Count()).Aggregate("", (q, w) => q + w.First().GetName() + "\t" + w.Count() + "\r\n");
     }
 }
