@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.Drawing;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Prisoner
 {
@@ -12,13 +14,10 @@ namespace Prisoner
         private const int ROUNDS_PER_GENERATION = 100; 
         private const int ELIMS_PER_GENERATION = 10; //should depend on size of pool
         private const int BOTS_PER_AI = 200;
-
-
+        
         private const int PTS_PER_COOP = 3;
         private const int PTS_PER_WIN = 5;
         private const int PTS_PER_LOSS = 1;
-        
-
 
         private List<IPrisoner> players;
         private Random random = new Random();
@@ -36,9 +35,7 @@ namespace Prisoner
         {
             for (int i = 0; i < generations; i++)
             {
-                var results = PlayGeneration(players).ToList();
-                var newGeneration = Eliminate(results).ToList();
-                this.players = newGeneration.ToList();
+                PlayRound();
             }
         }
         public void PlayRound()
@@ -121,6 +118,17 @@ namespace Prisoner
                 this.oppScore = opp;
             }
         }
-        public string ToString() => players.GroupBy(e => e.GetName()).OrderByDescending(e => e.Count()).Aggregate("", (q, w) => q + w.First().GetName() + "\t" + w.Count() + "\r\n");
+        public override string ToString() => players.GroupBy(e => e.GetName()).OrderByDescending(e => e.Count()).Aggregate("", (q, w) => q + w.First().GetName() + "\t" + w.Count() + "\r\n");
+        public Series ToSeries()
+        {
+            Series s = new Series();
+            s.ChartType = SeriesChartType.Doughnut;
+            foreach(var group in players.GroupBy(q => q.GetName()).OrderBy(w => w.Key))
+            {
+                s.Points.AddY(group.Count());
+                s.Points.Last().Label = group.Key;
+            }
+            return s;
+        }
     }
 }

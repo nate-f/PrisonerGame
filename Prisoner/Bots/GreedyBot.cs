@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Prisoner
 {
-    class GreedyBot : IPrisoner
+    public class GreedyBot : IPrisoner
     {
         Random rnd = new Random();
         public Move GetFirstMove()

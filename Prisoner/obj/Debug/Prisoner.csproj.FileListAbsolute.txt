@@ -9,3 +9,13 @@ C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.Properties.R
 C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.csproj.GenerateResource.Cache
 C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.exe
 C:\Users\fitz\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.pdb
+C:\Users\natef\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.csprojResolveAssemblyReference.cache
+C:\Users\natef\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.Form1.resources
+C:\Users\natef\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.Properties.Resources.resources
+C:\Users\natef\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.csproj.GenerateResource.Cache
+C:\Users\natef\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.csproj.CoreCompileInputs.cache
+C:\Users\natef\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.exe
+C:\Users\natef\Source\Repos\PrisonerGame\Prisoner\obj\Debug\Prisoner.pdb
+C:\Users\natef\Source\Repos\PrisonerGame\Prisoner\bin\Debug\Prisoner.exe.config
+C:\Users\natef\Source\Repos\PrisonerGame\Prisoner\bin\Debug\Prisoner.exe
+C:\Users\natef\Source\Repos\PrisonerGame\Prisoner\bin\Debug\Prisoner.pdb

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Prisoner
 {
-    class ForgivingBot : IPrisoner
+    public class ForgivingBot : IPrisoner
     {
         private bool forgive;
 
