@@ -10,33 +10,36 @@ namespace Prisoner
     public class PrisonerGame
     {
         private const int ROUNDS_PER_GENERATION = 10;
+        private const int ELIMS_PER_GENERATION = 10;
+
         private const int PTS_PER_COOP = 3;
         private const int PTS_PER_WIN = 5;
         private const int PTS_PER_LOSS = 1;
+        
 
 
-        private List<IPrisoner> players;
+        private List<IPrisoner> bots;
         private RandomNumberGenerator random = new RNGCryptoServiceProvider();
         public PrisonerGame(List<IPrisoner> bots, int generations)
         {
-            players = new List<IPrisoner>();
-            foreach(var bot in bots)
-            {
-                for(int i = 0; i < 10; i++)
-                {
-                    var botType = bot.GetType();
-                    var newBot = (IPrisoner) Activator.CreateInstance(botType);
-                    players.Add(newBot);
-                }
-            }
-            //need code to add default bots here
+            
         }
         public void PlayGame()
         {
-            
+            var players = CreatePlayers(bots);
+            var results = PlayGeneration(players);
+            var newGeneration = ScoreGeneration(results);
+            bots = newGeneration;
         }
 
-        private List<PlayerResult> PlayGeneration()
+        private IEnumerable<IPrisoner> CreatePlayers(IEnumerable<IPrisoner> prisoners)
+        {
+            foreach (var bot in prisoners)
+                for (int i = 0; i < 10; i++)
+                    yield return (IPrisoner)Activator.CreateInstance(bot.GetType());
+        }
+
+        private IEnumerable<PlayerResult> PlayGeneration(IEnumerable<IPrisoner> players)
         {
             var playersToGo = new List<IPrisoner>(players);
             var playerResults = new List<PlayerResult>();
@@ -77,15 +80,12 @@ namespace Prisoner
                     move0 = player0.GetMove(move1);
                     move1 = player1.GetMove(move0);
                 }
-                playerResults.Add(new PlayerResult(player0, p0Score, p1Score));
-                playerResults.Add(new PlayerResult(player1, p1Score, p0Score));
+                yield return new PlayerResult(player0, p0Score, p1Score);
+                yield return new PlayerResult(player1, p1Score, p0Score);
             }
-            return playerResults;
         }
-        public void ScoreGeneration()
-        {
+        private IEnumerable<IPrisoner> ScoreGeneration(IEnumerable<PlayerResult> results) =>  results.OrderBy(q => q.score).Take(results.Count - ELIMS_PER_GENERATION).Select(w => w.player).ToList();
 
-        }
         private class PlayerResult
         {
             public IPrisoner player;
